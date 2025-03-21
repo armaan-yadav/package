@@ -2,6 +2,8 @@
 
 A modern, lightweight starter template for React projects using TypeScript and Tailwind CSS. This template provides a solid foundation to jumpstart your front-end development with best practices and optimized configurations.
 
+[Template Link](https://github.com/armaan-yadav/react-ts-tail-shadkit-template)
+
 ## Features
 
 - ⚡️ **React** - A JavaScript library for building user interfaces
@@ -28,7 +30,6 @@ A modern, lightweight starter template for React projects using TypeScript and T
    ```
 
 2. And it's done! Start Coding
-
 
 ## Project Structure
 
