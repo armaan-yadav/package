@@ -1,0 +1,32 @@
+{
+  "name": "create-react-jaldi",
+  "version": "1.0.4",
+  "description": "A React TypeScript starter kit with Redux, Tailwind, and ShadCN",
+  "bin": {
+    "create-react-jaldi": "./bin/index.js"
+  },
+  "type": "module",
+  "main": "index.js",
+  "keywords": [
+    "react",
+    "typescript",
+    "shadcn",
+    "redux",
+    "starter",
+    "vite"
+  ],
+  "author": "Armaan Yadav",
+  "license": "MIT",
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "files": [
+    "bin",
+    "package.json"
+  ]
+}
