@@ -2,32 +2,64 @@
 import { execSync } from "child_process";
 import path from "path";
 import fs from "fs";
+import inquirer from "inquirer";
 
-// GitHub repository URL
-const repoUrl = "https://github.com/armaan-yadav/react-ts-tail-shadkit-template";
+const repoUrls = {
+  ts: "https://github.com/armaan-yadav/react-ts-tail-shadkit-template",
+  js: "https://github.com/armaan-yadav/react-js-tail-shadkit-template",
+};
 
-// Get project name from CLI arguments
-const projectName = process.argv[2] || "my-app";
+const args = process.argv.slice(2);
+const projectName = args.find((arg) => !arg.startsWith("-")) || "my-app";
 const projectPath = path.join(process.cwd(), projectName);
 
-console.log(`🚀 Creating a new project: ${projectName}`);
+const runCommand = (command) => {
+  try {
+    execSync(command, { stdio: "inherit" });
+  } catch (error) {
+    console.error(`❌ Error: ${error.message}`);
+    process.exit(1);
+  }
+};
 
-try {
-  // Clone the repository
-  execSync(`git clone ${repoUrl} ${projectName}`, { stdio: "inherit" });
+const promptUser = async () => {
+  const { template } = await inquirer.prompt([
+    {
+      type: "list",
+      name: "template",
+      message: "Select a template:",
+      choices: [
+        { name: "TypeScript (Recommended)", value: "ts" },
+        { name: "JavaScript", value: "js" },
+      ],
+    },
+  ]);
+  return template;
+};
 
-  // Change directory and remove Git history
+const setupProject = async () => {
+  const template = await promptUser();
+  const repoUrl = repoUrls[template];
+
+  console.log(
+    `🚀 Creating project: ${projectName} (${
+      template === "js" ? "JavaScript" : "TypeScript"
+    })`
+  );
+
+  runCommand(`git clone ${repoUrl} ${projectName}`);
+
   process.chdir(projectPath);
-  fs.rmSync(".git", { recursive: true, force: true });
+
+  if (fs.existsSync(".git")) {
+    fs.rmSync(".git", { recursive: true, force: true });
+  }
 
   console.log("📦 Installing dependencies...");
-  execSync(`npm install`, { stdio: "inherit" });
+  runCommand("npm install");
 
   console.log("🚀 Starting development server...");
-  execSync(`npm run dev`, { stdio: "inherit" });
+  runCommand("npm run dev");
+};
 
-  console.log(`✅ Project setup complete!`);
-} catch (error) {
-  console.error("❌ Error:", error.message);
-  process.exit(1); // Exit with error code
-}
+setupProject();
